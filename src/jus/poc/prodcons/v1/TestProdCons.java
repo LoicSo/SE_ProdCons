@@ -24,8 +24,8 @@ public class TestProdCons {
 		int nbC = Integer.parseInt(properties.getProperty("nbC"));
 		int bufSz = Integer.parseInt(properties.getProperty("BufSz"));
 		int prodTime = Integer.parseInt(properties.getProperty("ProdTime"));
-		int ConsTime = Integer.parseInt(properties.getProperty("ConsTime"));
-		int Mavg = Integer.parseInt(properties.getProperty("Mavg"));
+		int consTime = Integer.parseInt(properties.getProperty("ConsTime"));
+		int mavg = Integer.parseInt(properties.getProperty("Mavg"));
 		
 		
 	}

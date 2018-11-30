@@ -1,5 +1,6 @@
 package jus.poc.prodcons;
 public interface IProdConsBuffer {
+	
 /**
 * put m in the prodcons buffer
 **/
