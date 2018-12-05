@@ -27,7 +27,20 @@ public class TestProdCons {
 		int consTime = Integer.parseInt(properties.getProperty("ConsTime"));
 		int mavg = Integer.parseInt(properties.getProperty("Mavg"));
 		
+		ProdConsBuffer buff = new ProdConsBuffer(bufSz);
+		int nbMtot = 0;
 		
+		Producer[] prod = new Producer[nbP];
+		for (int i = 0; i < prod.length; i++) {
+			int nbM = (int) (Math.random() * mavg + 1);
+			prod[i] = new Producer(nbM, prodTime, buff);
+			nbMtot += nbM;
+		}
+		
+		Consumer[] cons = new Consumer[nbC];
+		for (int i = 0; i < cons.length; i++) {
+			cons[i] = new Consumer(consTime, buff);
+		}
 	}
 
 }

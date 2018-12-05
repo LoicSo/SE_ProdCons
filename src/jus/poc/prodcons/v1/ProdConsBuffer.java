@@ -5,18 +5,26 @@ import jus.poc.prodcons.IMessage;
 
 public class ProdConsBuffer implements IProdConsBuffer {
 	
-	private IMessage[] buf = new IMessage[100];
+	private MessageV1[] buf;
 	public int index = 0;
+	public int nbMCons = 0;
 
+	public ProdConsBuffer (int buffSize) {
+		buf = new MessageV1[buffSize];
+	}
+	
 	@Override
 	public synchronized void put(IMessage m) throws InterruptedException {
-		buf[index] = m;
+		while(index > buf.length) {
+			wait();
+		}
+		buf[index] = (MessageV1) m;
 		index ++;
 		notifyAll();
 	}
 
 	@Override
-	public synchronized IMessage get() throws InterruptedException {
+	public synchronized MessageV1 get() throws InterruptedException {
 		while(index == 0) {
             try {
                 //attente passive
@@ -25,6 +33,9 @@ public class ProdConsBuffer implements IProdConsBuffer {
                 ie.printStackTrace();
             }
         }
+		index--;
+		nbMCons++;
+		notifyAll();
         return buf[0];
 	}
 
@@ -32,5 +43,11 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	public int nmsg() {
 		return index;
 	}
+	
+	public int nbMesageCons() {
+		return nbMCons;
+	}
+
+
 
 }

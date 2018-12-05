@@ -1,4 +1,5 @@
 package jus.poc.prodcons;
+
 public interface IProdConsBuffer {
 	
 /**
@@ -15,4 +16,5 @@ public IMessage get() throws InterruptedException;
 * returns the number of messages currently available in the prodcons buffer
 **/
 public int nmsg();
+
 }
