@@ -5,6 +5,6 @@ public interface IMessage {
 	
 	public boolean isAvailable();
 	
-	public String print();
+	public String print(long id);
 	
 }

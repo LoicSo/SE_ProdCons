@@ -16,15 +16,14 @@ public class Producer extends Thread {
 	public void run() {
 		int i = 0;
 		MessageV1 m;
-		while(i != nbProd) {
+		for(i = 0; i < nbProd; i++) {
 			try {
-				sleep((long) (Math.random() * prodTime * 1000));
+				sleep(prodTime * 300);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 			m = new MessageV1(this.getId());
-			i++;
 			
 			try {
 				buff.put(m);
@@ -32,5 +31,6 @@ public class Producer extends Thread {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("Fin thread " + this.getId());
 	}
 }

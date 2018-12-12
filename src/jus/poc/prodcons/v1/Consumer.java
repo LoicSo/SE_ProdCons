@@ -13,12 +13,12 @@ public class Consumer extends Thread {
 		MessageV1 m = null;
 		while(true) {
 			try {
-				sleep((long)(Math.random() * consTime * 1000));
+				sleep(consTime * 300);
 				m = buff.get();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println(m.print());
+			System.out.println(m.print(this.getId()));
 		}
 	}
 }

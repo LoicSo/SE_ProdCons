@@ -1,19 +1,25 @@
 package jus.poc.prodcons.v1;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.InvalidPropertiesFormatException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 public class TestProdCons {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		List<Thread> l = new ArrayList<Thread>();
+		ProdConsBuffer buff; 
 		
-		String file = "options.xml";
+		String file = "/jus/poc/prodcons/options.xml";
 		
 		Properties properties = new Properties();
 		try {
 			properties.loadFromXML(
-			TestProdCons.class.getClassLoader().getResourceAsStream(file));
+			TestProdCons.class.getResourceAsStream(file));
 		} catch (InvalidPropertiesFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -27,20 +33,23 @@ public class TestProdCons {
 		int consTime = Integer.parseInt(properties.getProperty("ConsTime"));
 		int mavg = Integer.parseInt(properties.getProperty("Mavg"));
 		
-		ProdConsBuffer buff = new ProdConsBuffer(bufSz);
-		int nbMtot = 0;
+		buff = new ProdConsBuffer(bufSz);
 		
-		Producer[] prod = new Producer[nbP];
-		for (int i = 0; i < prod.length; i++) {
-			int nbM = (int) (Math.random() * mavg + 1);
-			prod[i] = new Producer(nbM, prodTime, buff);
-			nbMtot += nbM;
+		for (int i = 0; i < nbP; i++) {
+			l.add(new Producer(mavg, prodTime, buff));
+			l.get(i).join();
+		}
+		for (int i = 0; i < nbC; i++) {
+			l.add(new Consumer(consTime, buff));
 		}
 		
-		Consumer[] cons = new Consumer[nbC];
-		for (int i = 0; i < cons.length; i++) {
-			cons[i] = new Consumer(consTime, buff);
+		Collections.shuffle(l);
+		
+		for (Iterator<Thread> iterator = l.iterator(); iterator.hasNext();) {
+			Thread t = iterator.next();
+			t.start();			
 		}
+		
+		System.out.println("End of program");
 	}
-
 }

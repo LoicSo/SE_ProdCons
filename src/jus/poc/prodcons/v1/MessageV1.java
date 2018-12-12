@@ -14,8 +14,8 @@ public class MessageV1 implements IMessage {
 		return true;
 	}
 
-	public String print() {
-		return String.valueOf(contenu);
+	public String print(long id) {
+		return ("Thread n° " + id + " " + String.valueOf(contenu));
 	}
 
 }

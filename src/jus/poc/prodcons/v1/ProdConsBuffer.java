@@ -7,7 +7,6 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	private MessageV1[] buf;
 	public int index = 0;
-	public int nbMCons = 0;
 
 	public ProdConsBuffer (int buffSize) {
 		buf = new MessageV1[buffSize];
@@ -15,7 +14,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 	
 	@Override
 	public synchronized void put(IMessage m) throws InterruptedException {
-		while(index > buf.length) {
+		while(index >= buf.length) {
 			wait();
 		}
 		buf[index] = (MessageV1) m;
@@ -25,7 +24,7 @@ public class ProdConsBuffer implements IProdConsBuffer {
 
 	@Override
 	public synchronized MessageV1 get() throws InterruptedException {
-		while(index == 0) {
+		while(index <= 0) {
             try {
                 //attente passive
                 wait();
@@ -34,20 +33,12 @@ public class ProdConsBuffer implements IProdConsBuffer {
             }
         }
 		index--;
-		nbMCons++;
 		notifyAll();
-        return buf[0];
+        return buf[index];
 	}
 
 	@Override
 	public int nmsg() {
 		return index;
 	}
-	
-	public int nbMesageCons() {
-		return nbMCons;
-	}
-
-
-
 }
