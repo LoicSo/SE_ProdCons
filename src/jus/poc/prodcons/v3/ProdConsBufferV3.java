@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v2;
+package jus.poc.prodcons.v3;
 
 import jus.poc.prodcons.IProdConsBuffer;
 
@@ -8,19 +8,19 @@ import java.util.concurrent.Semaphore;
 
 import jus.poc.prodcons.IMessage;
 
-public class ProdConsBufferV2 implements IProdConsBuffer {
+public class ProdConsBufferV3 implements IProdConsBuffer {
 
 	private Semaphore mutex, notFull, notEmpty;
-	private List<MessageV2> buf;
+	private List<MessageV3> buf;
 	int size;
 	int nbMsgMax = 0;
 	int nbMsg = 0;
 
-	public ProdConsBufferV2(int buffSize) {
+	public ProdConsBufferV3(int buffSize) {
 		mutex = new Semaphore(1);
 		notFull = new Semaphore(buffSize);
 		notEmpty = new Semaphore(0);
-		buf = new ArrayList<MessageV2>(buffSize);
+		buf = new ArrayList<MessageV3>(buffSize);
 		size = buffSize;
 	}
 
@@ -29,7 +29,7 @@ public class ProdConsBufferV2 implements IProdConsBuffer {
 		notFull.acquire();
 
 		mutex.acquire();
-		buf.add((MessageV2) m);
+		buf.add((MessageV3) m);
 		nbMsg++;
 		mutex.release();
 
@@ -37,13 +37,13 @@ public class ProdConsBufferV2 implements IProdConsBuffer {
 	}
 
 	@Override
-	public MessageV2 get() throws InterruptedException {
+	public MessageV3 get() throws InterruptedException {
 		nbMsgMax--;
 
 		notEmpty.acquire();
 
 		mutex.acquire();
-		MessageV2 m = buf.remove(0);
+		MessageV3 m = buf.remove(0);
 		nbMsg--;
 		mutex.release();
 

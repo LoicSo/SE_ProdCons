@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v3;
 
 import jus.poc.prodcons.IProdConsBuffer;
 
@@ -15,11 +15,18 @@ public class Producer extends Thread {
 	
 	public void run() {
 		int i = 0;
-		MessageV1 m;
+		MessageV3 m;
 		for(i = 0; i < nbProd; i++) {
 			try {
 				sleep(prodTime * 1000);
-				m = new MessageV1(this.getId());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			
+			m = new MessageV3(this.getId());
+			
+			try {
 				buff.put(m);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

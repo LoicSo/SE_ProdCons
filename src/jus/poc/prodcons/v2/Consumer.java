@@ -11,7 +11,7 @@ public class Consumer extends Thread {
 	
 	public void run() {
 		MessageV2 m = null;
-		while(true) {
+		while(!(buff.endMsg())) {
 			try {
 				m = buff.get();
 				sleep(consTime * 1000);
@@ -21,9 +21,6 @@ public class Consumer extends Thread {
 			
 			if(m != null) {
 				System.out.println(m.print(this.getId()));
-			}
-			else {
-				break;
 			}
 		}
 		System.out.println("Fin thread Consumer "+ this.getId());

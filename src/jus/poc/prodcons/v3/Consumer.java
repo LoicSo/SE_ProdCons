@@ -1,16 +1,16 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v3;
 
 public class Consumer extends Thread {
 	int consTime;
-	ProdConsBufferV1 buff;
+	ProdConsBufferV3 buff;
 	
-	public Consumer(int t, ProdConsBufferV1 b) {
+	public Consumer(int t, ProdConsBufferV3 b) {
 		consTime = t;
 		buff = b;
 	}
 	
 	public void run() {
-		MessageV1 m = null;
+		MessageV3 m = null;
 		while(!(buff.endMsg())) {
 			try {
 				m = buff.get();

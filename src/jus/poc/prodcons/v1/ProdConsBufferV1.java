@@ -12,7 +12,7 @@ public class ProdConsBufferV1 implements IProdConsBuffer {
 	private List<MessageV1> buf;
 	int size;
 	int nbMsg = 0;
-	int nbMsgCons = 0;
+	int nbMsgMax = 0;
 
 	public ProdConsBufferV1(int buffSize) {
 		buf = new ArrayList<MessageV1>(buffSize);
@@ -31,24 +31,27 @@ public class ProdConsBufferV1 implements IProdConsBuffer {
 
 	@Override
 	public synchronized MessageV1 get() throws InterruptedException {
-		if (nbMsgCons < TestProdCons.nbMsgTot) {
-			nbMsgCons++;
-			while (nbMsg <= 0) {
-				// attente passive
-				wait();
-			}
-			MessageV1 m = buf.remove(0);
-			nbMsg--;
-			notifyAll();
-			return m;
+		nbMsgMax--;
+		while (nbMsg <= 0) {
+			// attente passive
+			wait();
 		}
-		else {
-			return null;
-		}
+		MessageV1 m = buf.remove(0);
+		nbMsg--;
+		notifyAll();
+		return m;
 	}
 
 	@Override
 	public int nmsg() {
 		return nbMsg;
+	}
+
+	public void setNbMaxMsg(int nbMsgTot) {
+		nbMsgMax = nbMsgTot;
+	}
+	
+	public boolean endMsg() {
+		return nbMsgMax == 0;
 	}
 }

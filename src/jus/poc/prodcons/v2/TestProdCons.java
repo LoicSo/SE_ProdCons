@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Properties;
 
 public class TestProdCons {
-	static int nbMsgTot = 0;
+	
 	
 	public static void main(String[] args) throws InterruptedException {
 		List<Thread> l = new ArrayList<Thread>();
 		ProdConsBufferV2 buff; 
-
+		int nbMsgTot = 0;
 		
 		String file = "/jus/poc/prodcons/options.xml";
 		
@@ -45,6 +45,8 @@ public class TestProdCons {
 		for (int i = 0; i < nbC; i++) {
 			l.add(new Consumer(consTime, buff));
 		}
+		
+		buff.setMaxMsg(nbMsgTot);
 		
 		Collections.shuffle(l);
 		
