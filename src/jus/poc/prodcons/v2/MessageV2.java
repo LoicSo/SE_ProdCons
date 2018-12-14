@@ -1,11 +1,11 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v2;
 
 import jus.poc.prodcons.IMessage;
 
-public class MessageV1 implements IMessage {
+public class MessageV2 implements IMessage {
 	long contenu;
 	
-	public MessageV1(long c) {
+	public MessageV2(long c) {
 		contenu = c;
 	}
 	
