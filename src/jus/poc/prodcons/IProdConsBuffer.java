@@ -16,5 +16,10 @@ public interface IProdConsBuffer {
 	 * returns the number of messages currently available in the prodcons buffer
 	 **/
 	public int nmsg();
-
+	
+	/**
+	 * Increase the total number of messages that the buffer will have during all the application 
+	 */
+	public void incrTotMes (int n);
+	
 }

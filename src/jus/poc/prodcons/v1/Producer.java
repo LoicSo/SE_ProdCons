@@ -11,16 +11,21 @@ public class Producer extends Thread {
 		nbProd = n;
 		prodTime =t;
 		buff = b;
+		
+		// On augmente le nombre total de message que le buffer contiendra pendant toute la duree de l'application
+		b.incrTotMes(nbProd);
 	}
 	
 	public void run() {
 		int i = 0;
 		MessageV1 m;
+		
+		// On produit le nombre de message definie
 		for(i = 0; i < nbProd; i++) {
 			try {
-				sleep(prodTime * 1000);
-				m = new MessageV1(this.getId());
-				buff.put(m);
+				sleep(prodTime * 1000); // On simule le temps de production
+				m = new MessageV1(this.getId()); // Création du message
+				buff.put(m);	// Ajout dans le buffer
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

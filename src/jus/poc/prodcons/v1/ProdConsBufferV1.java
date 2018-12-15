@@ -21,22 +21,36 @@ public class ProdConsBufferV1 implements IProdConsBuffer {
 
 	@Override
 	public synchronized void put(IMessage m) throws InterruptedException {
+		// On verifie qu'il y a de la place dans le buffer
 		while (nbMsg >= size) {
 			wait();
 		}
+		// On ajoute le message a la fin du buffer
 		buf.add((MessageV1) m);
 		nbMsg++;
+		
+		// Notification aux threads en attentes
 		notifyAll();
 	}
 
 	@Override
 	public synchronized MessageV1 get() throws InterruptedException {
+		// Si l'on entre dans cette methode alors on consommera obligatoirement un message
+		// On décrémente donc le nombre total de message restant pour que les autres threads ne viennent pas se bloquer
+		// si il ne este plus de message
 		nbMsgMax--;
 		while (nbMsg <= 0) {
 			// attente passive
 			wait();
 		}
+		
+		// On retire le premier message du buffer
 		MessageV1 m = buf.remove(0);
+		
+		// traitement du message
+		m.traitement(Thread.currentThread().getId());
+		
+		// Notification des threads en attente
 		nbMsg--;
 		notifyAll();
 		return m;
@@ -46,12 +60,14 @@ public class ProdConsBufferV1 implements IProdConsBuffer {
 	public int nmsg() {
 		return nbMsg;
 	}
-
-	public void setNbMaxMsg(int nbMsgTot) {
-		nbMsgMax = nbMsgTot;
-	}
 	
 	public boolean endMsg() {
 		return nbMsgMax == 0;
+	}
+
+	@Override
+	public void incrTotMes(int n) {
+		nbMsgMax += n;
+		
 	}
 }

@@ -3,8 +3,14 @@ package jus.poc.prodcons;
 
 public interface IMessage {
 	
+	/**
+	 * Indique si le message peut être consommé
+	 */
 	public boolean isAvailable();
 	
-	public String print(long id);
+	/**
+	 * Fonction de traitement du message
+	 */
+	public void traitement(long idCons);
 	
 }

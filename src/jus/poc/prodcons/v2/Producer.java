@@ -11,6 +11,7 @@ public class Producer extends Thread {
 		nbProd = n;
 		prodTime =t;
 		buff = b;
+		b.incrTotMes(nbProd);
 	}
 	
 	public void run() {

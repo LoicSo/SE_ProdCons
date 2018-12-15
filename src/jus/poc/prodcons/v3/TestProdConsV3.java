@@ -1,4 +1,4 @@
-package jus.poc.prodcons.v1;
+package jus.poc.prodcons.v3;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,21 +7,22 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
-public class TestProdCons {
+public class TestProdConsV3 {
 	
 	
 	public static void main(String[] args) throws InterruptedException {
 		List<Thread> l = new ArrayList<Thread>();
-		ProdConsBufferV1 buff; 
-		int nbMsgTot = 0;
+		ProdConsBufferV3 buff; 
+		Random r = new Random();
 		
 		String file = "/jus/poc/prodcons/options.xml";
 		
 		Properties properties = new Properties();
 		try {
 			properties.loadFromXML(
-			TestProdCons.class.getResourceAsStream(file));
+			TestProdConsV3.class.getResourceAsStream(file));
 		} catch (InvalidPropertiesFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -35,18 +36,18 @@ public class TestProdCons {
 		int consTime = Integer.parseInt(properties.getProperty("ConsTime"));
 		int mavg = Integer.parseInt(properties.getProperty("Mavg"));
 		
-		buff = new ProdConsBufferV1(bufSz);
+		buff = new ProdConsBufferV3(bufSz);
 		
 		for (int i = 0; i < nbP; i++) {
-			l.add(new Producer(mavg, prodTime, buff));
-			nbMsgTot += mavg;
+			int nmes = (int)(r.nextGaussian() + mavg);
+			int temps_prod = (int)(r.nextGaussian() + prodTime);
+			l.add(new Producer(nmes, temps_prod, buff, nbC));
 		}
 		
 		for (int i = 0; i < nbC; i++) {
-			l.add(new Consumer(consTime, buff));
+			int temps_cons = (int)(r.nextGaussian() + consTime);
+			l.add(new Consumer(temps_cons, buff));
 		}
-		
-		buff.setNbMaxMsg(nbMsgTot);
 		
 		Collections.shuffle(l);
 		
@@ -55,6 +56,6 @@ public class TestProdCons {
 			t.start();	
 		}
 		
-		System.out.println("Fin Thread Principal Niveau 1");
+		System.out.println("Fin Thread Principal Niveau 3");
 	}
 }

@@ -4,7 +4,7 @@ import jus.poc.prodcons.IMessage;
 
 public class MessageV3 implements IMessage {
 	long contenu;
-	int nbMsg;
+	private int nbMsg;
 	
 	public MessageV3(long c, int nb) {
 		contenu = c;
@@ -13,11 +13,20 @@ public class MessageV3 implements IMessage {
 	
 	@Override
 	public boolean isAvailable() {
-		return nbMsg != 0;
+		return nbMsg != 0; // Le message est disponible tant qu'il reste des exemplaires
+	}
+	
+	public int nbEx () {
+		return nbMsg;
 	}
 
-	public String print(long idCons) {
-		return ("Thread consommateur : " + idCons + " Thread Producteur : " + String.valueOf(contenu));
+	public void decrNbEx() {
+		nbMsg--;
 	}
 
+	@Override
+	public void traitement(long idCons) {
+		System.out.println("Thread consommateur : " + idCons + " Thread Producteur : " + String.valueOf(contenu));
+		
+	}
 }

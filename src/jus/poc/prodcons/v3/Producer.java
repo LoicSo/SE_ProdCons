@@ -6,11 +6,21 @@ public class Producer extends Thread {
 	int nbProd; // Nb de messages a produire
 	int prodTime; // Temps de production
 	IProdConsBuffer buff; // buffer où stocker les messages
+	int nb; // Nb d'exemplaire max d'un message
+	int[] nbEx;	// Tableau contenant le nombre d'exemplaire de chaque message
 	
-	public Producer (int n, int t, IProdConsBuffer b) {
+	public Producer (int n, int t, IProdConsBuffer b, int nb) {
 		nbProd = n;
 		prodTime =t;
 		buff = b;
+		this.nb = nb;
+		nbEx = new int[nbProd];
+		
+		// Definition de nombre d'exemplaire de chaque message et augmentation du nombre de message total du buffer
+		for (int i = 0; i < nbProd; i++) {
+			nbEx[i] = (int) (Math.random() * nb + 1);
+			buff.incrTotMes(nbEx[i]);
+		}
 	}
 	
 	public void run() {
@@ -23,8 +33,8 @@ public class Producer extends Thread {
 				e.printStackTrace();
 			}
 			
-			
-			m = new MessageV3(this.getId());
+			m = new MessageV3(this.getId(), nbEx[i]);
+			System.out.println("Nb Message Producer n°" + this.getId() + " : " + nbEx[i]);
 			
 			try {
 				buff.put(m);

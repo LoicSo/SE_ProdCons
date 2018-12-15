@@ -18,10 +18,6 @@ public class Consumer extends Thread {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-			if(m != null) {
-				System.out.println(m.print(this.getId()));
-			}
 		}
 		System.out.println("Fin thread Consumer "+ this.getId());
 	}

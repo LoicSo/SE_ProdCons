@@ -14,8 +14,10 @@ public class MessageV1 implements IMessage {
 		return true;
 	}
 
-	public String print(long idCons) {
-		return ("Thread consommateur : " + idCons + " Thread Producteur : " + String.valueOf(contenu));
+	@Override
+	public void traitement(long idCons) {
+		System.out.println("Thread consommateur : " + idCons + " Thread Producteur : " + String.valueOf(contenu));
+		
 	}
 
 }
