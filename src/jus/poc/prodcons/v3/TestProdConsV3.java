@@ -46,7 +46,9 @@ public class TestProdConsV3 {
 		
 		for (int i = 0; i < nbC; i++) {
 			int temps_cons = (int)(r.nextGaussian() + consTime);
-			l.add(new Consumer(temps_cons, buff));
+			Thread t = new Consumer(temps_cons, buff);
+			t.setDaemon(true);
+			l.add(t);
 		}
 		
 		Collections.shuffle(l);
